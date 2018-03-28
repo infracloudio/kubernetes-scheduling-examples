@@ -1,4 +1,4 @@
-# Working with taints and tolerations
+# Taints and Tolerations
 Taints can be used for advanced scheduling in kubernetes. Tutorial below is a walk through of such usage.
 
 ## Concepts
