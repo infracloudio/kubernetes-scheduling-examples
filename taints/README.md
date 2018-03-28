@@ -93,8 +93,54 @@ kubectl get pods -o wide
 You should be able that the pods aren't scheduled on node1
 ```
 NAME                                READY     STATUS    RESTARTS   AGE       IP           NODE
-nginx-deployment-6c54bd5869-r7mt8   1/1       Running   0          18s       10.20.32.2   node3.compute.infracloud.io
-nginx-deployment-6c54bd5869-t2hqr   1/1       Running   0          18s       10.20.32.3   node3.compute.infracloud.io
-nginx-deployment-6c54bd5869-xwr5b   1/1       Running   0          18s       10.20.61.2   node2.compute.infracloud.io
+nginx-deployment-6c54bd5869-g9rtf   1/1       Running   0          18s       10.20.32.2   node3.compute.infracloud.io
+nginx-deployment-6c54bd5869-v74m6   1/1       Running   0          18s       10.20.32.3   node3.compute.infracloud.io
+nginx-deployment-6c54bd5869-w5jxj   1/1       Running   0          18s       10.20.61.2   node2.compute.infracloud.io
 ```
 
+Now let's taint node3 with *NoExecute* effect, which will evict both the pods from node3 and schecule them on node2.
+```
+kubectl taint nodes node3.compute.infracloud.io node3=AlsoHatesPods:NoExecute
+```
+
+In a few seconds you'll see that the pods are terminated on node3 and spawned on node2
+```
+kubectl get pods -o wide
+
+NAME                                READY     STATUS    RESTARTS   AGE       IP            NODE
+nginx-deployment-6c54bd5869-8vqvc   1/1       Running   0          33s       10.20.42.21   node2.compute.infracloud.io
+nginx-deployment-6c54bd5869-hsjhj   1/1       Running   0          33s       10.20.42.20   node2.compute.infracloud.io
+nginx-deployment-6c54bd5869-v74m6   1/1       Running   0          2m        10.20.42.19   node2.compute.infracloud.io
+```
+
+The above example demonstrates taint based evictions.
+
+Let's delete the deployment and create new one with tolerations for the above taints.
+```
+kubectl delete deployment nginx-deployment
+```
+
+```
+kubectl create -f taints/deployment-tolerattion.yaml
+```
+
+You can check the output by running,
+```
+kubectl get pods -o wide
+```
+
+You should be able to see that some of the pods are scheduled on node1 and some on node2. However, no pod is scheduled on node3. This is because, in the new deployment spec, we are tolerating taint *NoSchedule* effect. node3 is tainted with *NoExecute* effect which we have not tolerated so no pods will be scheduled there.
+
+```
+NAME                                READY     STATUS    RESTARTS   AGE       IP            NODE
+nginx-deployment-5699885bdb-4dz8z   1/1       Running   0          1m        10.20.34.3    node1.compute.infracloud.io
+nginx-deployment-5699885bdb-cr7p7   1/1       Running   0          1m        10.20.34.4    node1.compute.infracloud.io
+nginx-deployment-5699885bdb-kjxwv   1/1       Running   0          1m        10.20.34.5    node1.compute.infracloud.io
+nginx-deployment-5699885bdb-kvfw6   1/1       Running   0          1m        10.20.34.7    node1.compute.infracloud.io
+nginx-deployment-5699885bdb-lx2zv   1/1       Running   0          1m        10.20.34.6    node1.compute.infracloud.io
+nginx-deployment-5699885bdb-m686q   1/1       Running   0          1m        10.20.42.30   node2.compute.infracloud.io
+nginx-deployment-5699885bdb-x7c6z   1/1       Running   0          1m        10.20.42.31   node2.compute.infracloud.io
+nginx-deployment-5699885bdb-z8cwl   1/1       Running   0          1m        10.20.34.9    node1.compute.infracloud.io
+nginx-deployment-5699885bdb-z9c68   1/1       Running   0          1m        10.20.34.8    node1.compute.infracloud.io
+nginx-deployment-5699885bdb-zshst   1/1       Running   0          1m        10.20.34.2    node1.compute.infracloud.io
+```
