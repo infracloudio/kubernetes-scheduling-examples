@@ -4,7 +4,7 @@ Taints can be used for advanced scheduling in kubernetes. Tutorial below is a wa
 ## Concepts
 
 ### Taints
-Taint is a property of node that allows you to repel a set of pods unless those pods explicitely tolerates the said taint.
+Taint is a property of node that allows you to repel a set of pods unless those pods explicitly tolerates the said taint.
 
 Taint has three parts. A key, a value and an effect.
 
@@ -49,6 +49,10 @@ What we are telling kubernetes here is that, on any node if you find that there'
 
 Toleration generally has four parts. A key, a value, an operator and an effect.
 Operator, if not specified, defaults to *Equal*
+
+## Use cases
+* Taints can be used to group together a set of Nodes that only run a certain set of workload, like network pods or pods with special resource requirement.
+* Taints can also be used to evict a large set of pods from a node using taint with *NoExecute* effect.
 
 ## Examples:
 Follow through guide.

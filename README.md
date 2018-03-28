@@ -1,3 +1,6 @@
+# Kubernetes-Scheduling-Examples
+This is a set of examples for advanced scheduling in kubernetes along with a walkthrough guide.
+
 ## Getting Started
 Below are the prerequisites 
 
@@ -16,3 +19,8 @@ node1.compute.infracloud.io   Ready     <none>    25m       v1.9.4
 node2.compute.infracloud.io   Ready     <none>    25m       v1.9.4
 node3.compute.infracloud.io   Ready     <none>    28m       v1.9.4
 ```
+
+### Kubernetes Scheduling
+* [Taints and Tolerations](taints/README.md)
+* [Node Affinity](nodeAffinity/README.md)
+* [Pod Affinity](podAffinity/README.md)
