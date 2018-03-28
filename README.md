@@ -1,5 +1,5 @@
 # Kubernetes-Scheduling-Examples
-This is a set of examples for advanced scheduling in kubernetes along with a walkthrough guide.
+This is a set of examples for advanced scheduling in kubernetes along with a walk-through guide.
 
 ## Getting Started
 Below are the prerequisites 
@@ -7,7 +7,7 @@ Below are the prerequisites
 ### Prerequisites
 If you don't have the kubernetes cluster ready, you can set it up using [kops](https://github.com/kubernetes/kops) or [kubeadm](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/).
 
-This tutorial, however, assumes that you have a working kubernetes cluster and kubelet is properly configured to access it.
+This tutorial, however, assumes that you have a working kubernetes multi-node cluster and kubectl is properly configured to access it.
 To verify this, run the following command
 ```
 kubectl get nodes

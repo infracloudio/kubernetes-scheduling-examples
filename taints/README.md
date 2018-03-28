@@ -28,7 +28,7 @@ A node can have multiple taints.
 For example, if any pod is to be scheduled on a node with multiple *NoExecute* effect taints, then that pod must tolerate all the taints. However, if the set of taints on a node is a combination of *NoExecute* and *PreferNoExecute* effects and the pod only tolerates *NoExecute* taints then kubernetes will prefer not to schedule the pod on that node, but will do it anyway if there's no alternative.
 
 ### Tolerations
-Nodes are tainted for a simple reason, to avoid running of workload. The similar outcome can be achived by PodAffinity/PodAnti-Affinity, however, to reject a large workload taints are more efficient (In a sense that they only require tolerations to be added to the small workload that does run on the tainted nodes as opposed to podAffinity which would require every pod template to carry that information)
+Nodes are tainted for a simple reason, to avoid running of workload. The similar outcome can be achieved by PodAffinity/PodAnti-Affinity, however, to reject a large workload taints are more efficient (In a sense that they only require tolerations to be added to the small workload that does run on the tainted nodes as opposed to podAffinity which would require every pod template to carry that information)
 
 Toleration is simply a way to overcome a taint.
 
@@ -98,7 +98,7 @@ nginx-deployment-6c54bd5869-v74m6   1/1       Running   0          18s       10.
 nginx-deployment-6c54bd5869-w5jxj   1/1       Running   0          18s       10.20.61.2   node2.compute.infracloud.io
 ```
 
-Now let's taint node3 with *NoExecute* effect, which will evict both the pods from node3 and schecule them on node2.
+Now let's taint node3 with *NoExecute* effect, which will evict both the pods from node3 and schedule them on node2.
 ```
 kubectl taint nodes node3.compute.infracloud.io node3=AlsoHatesPods:NoExecute
 ```
@@ -110,7 +110,7 @@ kubectl get pods -o wide
 NAME                                READY     STATUS    RESTARTS   AGE       IP            NODE
 nginx-deployment-6c54bd5869-8vqvc   1/1       Running   0          33s       10.20.42.21   node2.compute.infracloud.io
 nginx-deployment-6c54bd5869-hsjhj   1/1       Running   0          33s       10.20.42.20   node2.compute.infracloud.io
-nginx-deployment-6c54bd5869-v74m6   1/1       Running   0          2m        10.20.42.19   node2.compute.infracloud.io
+nginx-deployment-6c54bd5869-w5jxj   1/1       Running   0          2m        10.20.42.19   node2.compute.infracloud.io
 ```
 
 The above example demonstrates taint based evictions.
@@ -143,4 +143,12 @@ nginx-deployment-5699885bdb-x7c6z   1/1       Running   0          1m        10.
 nginx-deployment-5699885bdb-z8cwl   1/1       Running   0          1m        10.20.34.9    node1.compute.infracloud.io
 nginx-deployment-5699885bdb-z9c68   1/1       Running   0          1m        10.20.34.8    node1.compute.infracloud.io
 nginx-deployment-5699885bdb-zshst   1/1       Running   0          1m        10.20.34.2    node1.compute.infracloud.io
+```
+
+To finish off, let's remove the taints from the nodes,
+```
+kubectl taint nodes node3.compute.infracloud.io node3:NoExecute-
+```
+```
+kubectl taint nodes node1.compute.infracloud.io node1:NoSchedule-
 ```

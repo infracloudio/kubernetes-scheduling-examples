@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: nginx
-  replicas: 10 # Run 3 pods matching the template below
+  replicas: 10 # Run 10 pods matching the template below
   template:
     metadata:
       labels:
