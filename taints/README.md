@@ -121,7 +121,7 @@ kubectl delete deployment nginx-deployment
 ```
 
 ```
-kubectl create -f taints/deployment-tolerattion.yaml
+kubectl create -f taints/deployment-toleration.yaml
 ```
 
 You can check the output by running,
