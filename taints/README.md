@@ -10,13 +10,13 @@ Taint has three parts. A key, a value and an effect.
 
 For example,
 ```
-kubectl taint nodes node1.compute.infracloud.io node1=HatesPods:NoSchedule
+kubectl taint nodes node1.compute.infracloud.io thisnode=HatesPods:NoSchedule
 ```
-The above taint has key=node1, value=HatesPods and effect as NoSchedule. These key value pairs are configurable. Any pod that doesn't have a matching toleration to this taint will not be scheduled on node1.
+The above taint has key=thisnode, value=HatesPods and effect as NoSchedule. These key value pairs are configurable. Any pod that doesn't have a matching toleration to this taint will not be scheduled on node1.
 
 To remove the above taint, we can run the following command
 ```
-kubectl taint nodes node1.compute.infracloud.io node1:NoSchedule-
+kubectl taint nodes node1.compute.infracloud.io thisnode:NoSchedule-
 ```
 
 What are some of the Taint effects?
