@@ -33,13 +33,13 @@ Nodes are tainted for a simple reason, to avoid running of workload. The similar
 Toleration is simply a way to overcome a taint.
 
 For example,
-In the above section, we have tainted node1.compute.infracloud.io
+In the above section, we have tainted thisnode.compute.infracloud.io
 
 To schedule the pod on that node, we need a matching toleration. Below is the toleration that can be used to overcome the taint.
 
 ```
 tolerations:
-- key: "node1"
+- key: "thisnode"
   operator: "Equal"
   value: "HatesPods"
   effect: "NoSchedule"
@@ -72,7 +72,7 @@ node3.compute.infracloud.io   Ready     <none>    28m       v1.9.4
 
 Now, let's taint node1 with *NoSchedule* effect.
 ```
-kubectl taint nodes node1.compute.infracloud.io node1=HatesPods:NoSchedule
+kubectl taint nodes node1.compute.infracloud.io thisnode=HatesPods:NoSchedule
 ```
 
 You should be able to see that node1 is now tainted.
@@ -100,7 +100,7 @@ nginx-deployment-6c54bd5869-w5jxj   1/1       Running   0          18s       10.
 
 Now let's taint node3 with *NoExecute* effect, which will evict both the pods from node3 and schedule them on node2.
 ```
-kubectl taint nodes node3.compute.infracloud.io node3=AlsoHatesPods:NoExecute
+kubectl taint nodes node3.compute.infracloud.io thisnode=AlsoHatesPods:NoExecute
 ```
 
 In a few seconds you'll see that the pods are terminated on node3 and spawned on node2
@@ -147,8 +147,8 @@ nginx-deployment-5699885bdb-zshst   1/1       Running   0          1m        10.
 
 To finish off, let's remove the taints from the nodes,
 ```
-kubectl taint nodes node3.compute.infracloud.io node3:NoExecute-
+kubectl taint nodes node3.compute.infracloud.io thisnode:NoExecute-
 ```
 ```
-kubectl taint nodes node1.compute.infracloud.io node1:NoSchedule-
+kubectl taint nodes node1.compute.infracloud.io thisnode:NoSchedule-
 ```
